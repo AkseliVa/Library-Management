@@ -26,10 +26,36 @@ mongoose.connect(uri || "", {
     console.log("Failed to connect to MongoDB", err)
 })
 
+const bookSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    author: { type: String, required: true }
+});
+
+const Book = mongoose.model("Book", bookSchema);
+
+app.post("/books", async (req: Request, res: Response) => {
+    try {
+        const newBook = new Book(req.body);
+        const savedBook = await newBook.save();
+        res.status(201).json(savedBook);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to add book" })
+    }
+});
+
+app.get("/books", async (req: Request, res: Response) => {
+    try {
+        const books = await Book.find();
+        res.status(200).json(books);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch books" })
+    }
+})
+
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!")
 });
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`)
-})
+});

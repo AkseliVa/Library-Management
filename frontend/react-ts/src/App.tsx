@@ -7,14 +7,13 @@ interface Book {
 }
 
 const App: React.FC = () => {
-  const [message, setMessage] = useState<string>('');
   const [newBook, setNewBook] = useState<Book>({title: "", author: ""});
   const [books, setBooks] = useState<Book[]>([]);
 
   useEffect(() => {
     api.get('/')
       .then(response => {
-        setMessage(response.data);
+        console.log(response.data);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -56,7 +55,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>{message}</h1>
+      <h1>Library Management</h1>
 
       <input
         name="title"
@@ -77,7 +76,7 @@ const App: React.FC = () => {
       <h2>Books List</h2>
       <ul>
         {books.map((book, index) => (
-          <li key={index}>{book.title} by {book.author}</li>
+          <li key={index}><b>{book.title}</b> by <b>{book.author}</b></li>
         ))}
       </ul>
     </div>

@@ -58,10 +58,10 @@ const App: React.FC = () => {
     api.delete(`/book/${id}`)
     .then(response => {
       fetchBooks();
-      console.log("Book deleted")
+      console.log("Book deleted: ", response.data)
     })
     .catch(error => {
-      console.error("Error deleting book")
+      console.error("Error deleting book: ", error)
     })
   }
 

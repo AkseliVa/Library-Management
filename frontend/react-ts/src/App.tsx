@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import api from './services/api';
 
 interface Book {
+  _id?: string;
   title: string;
   author: string
 }
@@ -53,6 +54,17 @@ const App: React.FC = () => {
       })
   }
 
+  const deleteBook = (id: String) => {
+    api.delete(`/book/${id}`)
+    .then(response => {
+      fetchBooks();
+      console.log("Book deleted")
+    })
+    .catch(error => {
+      console.error("Error deleting book")
+    })
+  }
+
   return (
     <div>
       <h1>Library Management</h1>
@@ -75,8 +87,11 @@ const App: React.FC = () => {
 
       <h2>Books List</h2>
       <ul>
-        {books.map((book, index) => (
-          <li key={index}><b>{book.title}</b> by <b>{book.author}</b></li>
+        {books.map((book) => (
+          <li key={book._id}>
+            <b>{book.title}</b> by <b>{book.author}</b>
+            <button onClick={() => deleteBook(book._id!)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>

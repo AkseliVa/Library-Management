@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from './services/api';
+import './App.css';
 
 interface Book {
   _id?: string;
@@ -41,6 +42,12 @@ const App: React.FC = () => {
     }));
   };
 
+  const handleKeyPress = (e:React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      addNewBook();
+    }
+  }
+
   const addNewBook = () => {
     api.post('/books', newBook)
       .then(response => {
@@ -66,7 +73,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <h1>Library Management</h1>
 
       <input
@@ -74,6 +81,7 @@ const App: React.FC = () => {
         placeholder='Title'
         value={newBook.title}
         onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
       />
 
       <input
@@ -81,6 +89,7 @@ const App: React.FC = () => {
         placeholder='Author'
         value={newBook.author}
         onChange={handleInputChange}
+        onKeyPress={handleKeyPress}
       />
 
       <button onClick={addNewBook}>Send</button>
@@ -90,7 +99,7 @@ const App: React.FC = () => {
         {books.map((book) => (
           <li key={book._id}>
             <b>{book.title}</b> by <b>{book.author}</b>
-            <button onClick={() => deleteBook(book._id!)}>Delete</button>
+            <button className='delete' onClick={() => deleteBook(book._id!)}>Delete</button>
           </li>
         ))}
       </ul>
